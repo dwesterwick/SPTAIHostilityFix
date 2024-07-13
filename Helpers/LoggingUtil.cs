@@ -44,6 +44,11 @@ namespace SPTAIHostilityFix.Helpers
 
         public static void LogInfo(string message)
         {
+            if (!SPTAIHostilityFixPlugin.ShowDebugMessages.Value)
+            {
+                return;
+            }
+
             Logger.LogInfo(message);
         }
 

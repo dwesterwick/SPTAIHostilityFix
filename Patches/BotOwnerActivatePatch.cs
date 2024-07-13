@@ -8,7 +8,6 @@ using Comfort.Common;
 using EFT;
 using SPT.Reflection.Patching;
 using SPTAIHostilityFix.Helpers;
-using UnityEngine;
 
 namespace SPTAIHostilityFix.Patches
 {
@@ -22,8 +21,15 @@ namespace SPTAIHostilityFix.Patches
         [PatchPostfix]
         private static void PatchPostfix(BotOwner __instance)
         {
+            if (!SPTAIHostilityFixPlugin.EnableMod.Value)
+            {
+                return;
+            }
+
             LoggingUtil.LogInfo("Checking enemies of " + __instance.GetText() + "...");
+
             CheckAndSetAllEnemies(__instance);
+
             LoggingUtil.LogInfo(__instance.GetText() + " enemy checks complete");
         }
 
@@ -38,8 +44,7 @@ namespace SPTAIHostilityFix.Patches
                 checkAndSetEnemiesForBot(newBot, humanPlayer);
             }
 
-            BotsController botsController = Singleton<IBotGame>.Instance.BotsController;
-            IEnumerable<BotOwner> activatedBots = botsController.Bots.BotOwners
+            IEnumerable<BotOwner> activatedBots = Singleton<IBotGame>.Instance.BotsController.Bots.BotOwners
                 .Where(b => b.BotState == EBotState.Active);
 
             foreach (BotOwner bot in activatedBots)
@@ -49,7 +54,7 @@ namespace SPTAIHostilityFix.Patches
                     continue;
                 }
 
-                if (areBotsInSameGroup(newBot, bot))
+                if (newBot.IsInTheSameGroupAs(bot))
                 {
                     LoggingUtil.LogInfo(newBot.GetText() + " and " + bot.GetText() + " are in the same group");
                     continue;
@@ -63,27 +68,10 @@ namespace SPTAIHostilityFix.Patches
 
         private static void checkAndSetEnemiesForBot(BotOwner bot, IPlayer player)
         {
-            bool isSameSide = player.Profile.Info.Side == bot.Profile.Info.Side;
-            isSameSide |= (player.Profile.Info.Side == EPlayerSide.Usec) && bot.Profile.Info.Settings.Role.IsExUsec();
-
-            bool shouldBeEnemy = !isSameSide || bot.BotsGroup.IsPlayerEnemy(player);
-            if (shouldBeEnemy && bot.BotsGroup.CheckAndAddEnemy(player))
+            if (bot.IsHostileWith(player) && bot.BotsGroup.CheckAndAddEnemy(player))
             {
                 LoggingUtil.LogWarning(player.GetText() + " is now an enemy of " + bot.GetText());
             }
-        }
-
-        private static bool areBotsInSameGroup(BotOwner bot1, BotOwner bot2)
-        {
-            for (int m = 0; m < bot1.BotsGroup.MembersCount; m++)
-            {
-                if (bot1.BotsGroup.Member(m) == bot2)
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
+        }        
     }
 }
