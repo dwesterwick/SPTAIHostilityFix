@@ -71,6 +71,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Patches\BotOwnerActivatePatch.cs" />
+    <Compile Include="Patches\BotOwnerCreatePatch.cs" />
+    <Compile Include="Patches\BotEnemiesControllerSetInfoPatch.cs" />
+    <Compile Include="Patches\BotOwnerPreActivatePatch.cs" />
     <Compile Include="Patches\AddEnemyPatch.cs" />
     <Compile Include="Patches\IsPlayerEnemyPatch.cs" />
     <Compile Include="Helpers\LoggingUtil.cs" />

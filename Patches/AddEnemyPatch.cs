@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using EFT;
+using HarmonyLib;
 using SPT.Reflection.Patching;
 using SPTAIHostilityFix.Helpers;
 
@@ -18,27 +19,19 @@ namespace SPTAIHostilityFix.Patches
             return typeof(BotsGroup).GetMethod("AddEnemy", BindingFlags.Public | BindingFlags.Instance);
         }
 
-        [PatchPrefix]
-        private static bool PatchPrefix(BotsGroup __instance, IPlayer person, EBotEnemyCause cause)
+        [PatchPostfix]
+        private static void PatchPostfix(BotsGroup __instance, IPlayer person, EBotEnemyCause cause)
         {
-            if (!person.IsYourPlayer)
-            {
-                return true;
-            }
+            FieldInfo initialBotField = AccessTools.Field(typeof(BotsGroup), "_initialBot");
+            BotOwner initialBot = (BotOwner)initialBotField.GetValue(__instance);
 
-            // Get the ID's of all group members
-            List<BotOwner> groupMemberList = new List<BotOwner>();
-            for (int m = 0; m < __instance.MembersCount; m++)
-            {
-                groupMemberList.Add(__instance.Member(m));
-            }
-            string[] groupMemberIDs = groupMemberList.Select(m => m.Profile.Nickname).ToArray();
-
-            LoggingUtil.LogInfo("You are now an enemy of " + string.Join(", ", groupMemberIDs) + " due to reason: " + cause.ToString());
+            LoggingUtil.LogInfo(person.Profile.Nickname + " is  now an enemy of group containing " + initialBot.Profile.Nickname + " due to reason: " + cause.ToString());
             StackTrace stackTrace = new StackTrace();
             LoggingUtil.LogInfo(stackTrace.ToString());
 
-            return true;
+            LoggingUtil.LogInfo("Allies of group containing " + initialBot.Profile.Nickname + ": " + string.Join(", ", __instance.Allies.Select(a => a.Profile.Nickname)));
+            LoggingUtil.LogInfo("Neutrals of group containing " + initialBot.Profile.Nickname + ": " + string.Join(", ", __instance.Neutrals.Select(a => a.Key.Profile.Nickname)));
+            LoggingUtil.LogInfo("Enemies of group containing " + initialBot.Profile.Nickname + ": " + string.Join(", ", __instance.Neutrals.Select(a => a.Key.Profile.Nickname)));
         }
     }
 }

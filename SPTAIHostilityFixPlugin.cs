@@ -20,8 +20,14 @@ namespace SPTAIHostilityFix
 
             LoggingUtil.Logger = Logger;
 
-            new Patches.IsPlayerEnemyPatch().Enable();
-            new Patches.AddEnemyPatch().Enable();
+            //new Patches.IsPlayerEnemyPatch().Enable();
+            //new Patches.AddEnemyPatch().Enable();
+            //new Patches.BotOwnerPreActivatePatch().Enable();
+            //new Patches.BotEnemiesControllerSetInfoPatch().Enable();
+            //new Patches.BotOwnerCreatePatch().Enable();
+            new Patches.BotOwnerActivatePatch().Enable();
+
+            //fixBSGCrap();
 
             Logger.LogInfo("Loading AIHostilityFix...done.");
         }
