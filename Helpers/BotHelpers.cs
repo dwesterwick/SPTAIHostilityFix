@@ -16,8 +16,8 @@ namespace SPTAIHostilityFix.Helpers
                 return false;
             }
 
-            bool areUsecPals = (player.Profile.Info.Side == EPlayerSide.Usec) && bot.Profile.Info.Settings.Role.IsExUsec();
-            areUsecPals |= (bot.Profile.Info.Side == EPlayerSide.Usec) && player.Profile.Info.Settings.Role.IsExUsec();
+            bool areUsecPals = (player.Profile.Info.Side == EPlayerSide.Usec) && bot.Profile.Info.Settings.Role.isAFriendlyUSECRole();
+            areUsecPals |= (bot.Profile.Info.Side == EPlayerSide.Usec) && player.Profile.Info.Settings.Role.isAFriendlyUSECRole();
 
             if (areUsecPals)
             {
@@ -57,6 +57,12 @@ namespace SPTAIHostilityFix.Helpers
             }
 
             return false;
+        }
+
+        private static bool isAFriendlyUSECRole(this WildSpawnType wildSpawnType)
+        {
+            //return wildSpawnType.IsExUsec();
+            return wildSpawnType == WildSpawnType.exUsec;
         }
     }
 }
