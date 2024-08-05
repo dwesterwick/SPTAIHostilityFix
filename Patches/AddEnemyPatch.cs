@@ -21,6 +21,11 @@ namespace SPTAIHostilityFix.Patches
         [PatchPostfix]
         private static void PatchPostfix(BotOwner ____initialBot, BotsGroup __instance, IPlayer person, EBotEnemyCause cause)
         {
+            if (!SPTAIHostilityFixPlugin.ShowDebugAddEnemyMessages.Value)
+            {
+                return;
+            }
+
             LoggingUtil.LogInfo(person.Profile.Nickname + " is now an enemy of group containing " + ____initialBot.Profile.Nickname + " due to reason: " + cause.ToString());
             StackTrace stackTrace = new StackTrace();
             LoggingUtil.LogInfo(stackTrace.ToString());
