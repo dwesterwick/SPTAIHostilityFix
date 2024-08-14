@@ -10,7 +10,7 @@ using SPTAIHostilityFix.Helpers;
 
 namespace SPTAIHostilityFix
 {
-    [BepInPlugin("com.DanW.AIHostilityFix", "DanW-AIHostilityFix", "1.0.2")]
+    [BepInPlugin("com.DanW.AIHostilityFix", "DanW-AIHostilityFix", "1.0.3")]
     public class SPTAIHostilityFixPlugin : BaseUnityPlugin
     {
         public static ConfigEntry<bool> EnableMod;
@@ -23,11 +23,11 @@ namespace SPTAIHostilityFix
 
             LoggingUtil.Logger = Logger;
             new Patches.BotOwnerActivatePatch().Enable();
-            new Patches.AddEnemyPatch().Enable();
+            new Patches.BotsGroupAddEnemyPatch().Enable();
 
             EnableMod = Config.Bind("Main", "Enabled", true, "Apply changes to new bot spawns");
-            ShowDebugMessages = Config.Bind("Debug", "Show debug messages (Bot Spawns)", false, "Show additional debugging information when bots spawn");
-            ShowDebugAddEnemyMessages = Config.Bind("Debug", "Show debug messages (Enemy Added)", false, "Show additional debugging information when players are added to bot enemy lists");
+            ShowDebugMessages = Config.Bind("Debug", "Show debug messages", false, "Show additional debugging information");
+            ShowDebugAddEnemyMessages = Config.Bind("Debug", "Show more debug messages (Enemy Added)", false, "Show additional debugging information when players are added to bot enemy lists");
 
             Logger.LogInfo("Loading AIHostilityFix...done.");
         }

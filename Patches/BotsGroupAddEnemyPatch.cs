@@ -11,7 +11,7 @@ using SPTAIHostilityFix.Helpers;
 
 namespace SPTAIHostilityFix.Patches
 {
-    public class AddEnemyPatch : ModulePatch
+    public class BotsGroupAddEnemyPatch : ModulePatch
     {
         protected override MethodBase GetTargetMethod()
         {
@@ -26,13 +26,11 @@ namespace SPTAIHostilityFix.Patches
                 return;
             }
 
-            LoggingUtil.LogInfo(person.Profile.Nickname + " is now an enemy of group containing " + ____initialBot.Profile.Nickname + " due to reason: " + cause.ToString());
+            LoggingUtil.LogInfo(person.Profile.Nickname + " (" + person.GetType().FullName + ") is now an enemy of group containing " + ____initialBot.Profile.Nickname + " due to reason: " + cause.ToString());
             StackTrace stackTrace = new StackTrace();
             LoggingUtil.LogInfo(stackTrace.ToString());
 
-            LoggingUtil.LogInfo("Allies of group containing " + ____initialBot.Profile.Nickname + ": " + string.Join(", ", __instance.Allies.Select(a => a.Profile.Nickname)));
-            LoggingUtil.LogInfo("Neutrals of group containing " + ____initialBot.Profile.Nickname + ": " + string.Join(", ", __instance.Neutrals.Select(a => a.Key.Profile.Nickname)));
-            LoggingUtil.LogInfo("Enemies of group containing " + ____initialBot.Profile.Nickname + ": " + string.Join(", ", __instance.Neutrals.Select(a => a.Key.Profile.Nickname)));
+            __instance.LogAllianceInfo(____initialBot);
         }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Comfort.Common;
 using EFT;
 
 namespace SPTAIHostilityFix.Helpers
@@ -57,6 +58,19 @@ namespace SPTAIHostilityFix.Helpers
             }
 
             return false;
+        }
+
+        public static BotOwner GetBotOwnerForPlayer(this IPlayer player)
+        {
+            IEnumerable<BotOwner> matchingOwners = Singleton<IBotGame>.Instance.BotsController.Bots.BotOwners
+                .Where(b => b.Profile.Id == player.Profile.Id);
+
+            if (matchingOwners.Count() == 1)
+            {
+                return matchingOwners.First();
+            }
+
+            return null;
         }
 
         private static bool isAFriendlyUSECRole(this WildSpawnType wildSpawnType)

@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using EFT;
+using HarmonyLib;
 
 namespace SPTAIHostilityFix.Helpers
 {
@@ -60,6 +62,19 @@ namespace SPTAIHostilityFix.Helpers
         public static void LogError(string message)
         {
             Logger.LogError(message);
+        }
+
+        public static void LogAllianceInfo(this BotsGroup botsGroup)
+        {
+            FieldInfo initialBotFieldInfo = AccessTools.Field(typeof(BotsGroup), "_initialBot");
+            LogAllianceInfo(botsGroup, (BotOwner)initialBotFieldInfo.GetValue(botsGroup));
+        }
+
+        public static void LogAllianceInfo(this BotsGroup botsGroup, BotOwner _initialBot)
+        {
+            LogInfo("Allies of group containing " + _initialBot.Profile.Nickname + ": " + string.Join(", ", botsGroup.Allies.Select(a => a.Profile.Nickname)));
+            LogInfo("Neutrals of group containing " + _initialBot.Profile.Nickname + ": " + string.Join(", ", botsGroup.Neutrals.Select(a => a.Key.Profile.Nickname)));
+            LogInfo("Enemies of group containing " + _initialBot.Profile.Nickname + ": " + string.Join(", ", botsGroup.Enemies.Select(a => a.Key.Profile.Nickname)));
         }
     }
 }
