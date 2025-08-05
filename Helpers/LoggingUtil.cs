@@ -72,6 +72,12 @@ namespace SPTAIHostilityFix.Helpers
 
         public static void LogAllianceInfo(this BotsGroup botsGroup, BotOwner _initialBot)
         {
+            if (_initialBot == null)
+            {
+                LogWarning("Cannot show alliance information for a group containing a null bot");
+                return;
+            }
+
             LogInfo("Allies of group containing " + _initialBot.Profile.Nickname + ": " + string.Join(", ", botsGroup.Allies.Select(a => a.Profile.Nickname)));
             LogInfo("Neutrals of group containing " + _initialBot.Profile.Nickname + ": " + string.Join(", ", botsGroup.Neutrals.Select(a => a.Key.Profile.Nickname)));
             LogInfo("Enemies of group containing " + _initialBot.Profile.Nickname + ": " + string.Join(", ", botsGroup.Enemies.Select(a => a.Key.Profile.Nickname)));

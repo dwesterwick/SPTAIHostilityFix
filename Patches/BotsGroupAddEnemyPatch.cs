@@ -19,7 +19,7 @@ namespace SPTAIHostilityFix.Patches
         }
 
         [PatchPostfix]
-        private static void PatchPostfix(BotOwner ____initialBot, BotsGroup __instance, IPlayer person, EBotEnemyCause cause)
+        protected static void PatchPostfix(BotOwner ____initialBot, BotsGroup __instance, IPlayer person, EBotEnemyCause cause)
         {
             if (!SPTAIHostilityFixPlugin.ShowDebugAddEnemyMessages.Value)
             {

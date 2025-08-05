@@ -19,7 +19,7 @@ namespace SPTAIHostilityFix.Patches
         }
 
         [PatchPostfix]
-        private static void PatchPostfix(BotOwner __instance)
+        protected static void PatchPostfix(BotOwner __instance)
         {
             if (!SPTAIHostilityFixPlugin.EnableMod.Value)
             {

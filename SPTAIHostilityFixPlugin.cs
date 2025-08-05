@@ -10,14 +10,14 @@ using SPTAIHostilityFix.Helpers;
 
 namespace SPTAIHostilityFix
 {
-    [BepInPlugin("com.DanW.AIHostilityFix", "DanW-AIHostilityFix", "1.0.3")]
+    [BepInPlugin("com.DanW.AIHostilityFix", "DanW-AIHostilityFix", "1.0.4")]
     public class SPTAIHostilityFixPlugin : BaseUnityPlugin
     {
         public static ConfigEntry<bool> EnableMod;
         public static ConfigEntry<bool> ShowDebugMessages;
         public static ConfigEntry<bool> ShowDebugAddEnemyMessages;
 
-        private void Awake()
+        protected void Awake()
         {
             Logger.LogInfo("Loading AIHostilityFix...");
 
