@@ -19,18 +19,18 @@ namespace SPTAIHostilityFix.Patches
         }
 
         [PatchPostfix]
-        protected static void PatchPostfix(BotOwner ____initialBot, BotsGroup __instance, IPlayer person, EBotEnemyCause cause)
+        protected static void PatchPostfix(BotOwner ___InitialBot, BotsGroup __instance, IPlayer person, EBotEnemyCause cause)
         {
             if (!SPTAIHostilityFixPlugin.ShowDebugAddEnemyMessages.Value)
             {
                 return;
             }
 
-            LoggingUtil.LogInfo(person.Profile.Nickname + " (" + person.GetType().FullName + ") is now an enemy of group containing " + ____initialBot.Profile.Nickname + " due to reason: " + cause.ToString());
+            LoggingUtil.LogInfo(person.Profile.Nickname + " (" + person.GetType().FullName + ") is now an enemy of group containing " + ___InitialBot.Profile.Nickname + " due to reason: " + cause.ToString());
             StackTrace stackTrace = new StackTrace();
             LoggingUtil.LogInfo(stackTrace.ToString());
 
-            __instance.LogAllianceInfo(____initialBot);
+            __instance.LogAllianceInfo(___InitialBot);
         }
     }
 }
