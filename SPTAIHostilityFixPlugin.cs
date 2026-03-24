@@ -10,7 +10,7 @@ using SPTAIHostilityFix.Helpers;
 
 namespace SPTAIHostilityFix
 {
-    [BepInPlugin("com.danw.aihostilityfix", "DanW-AIHostilityFix", "1.0.5")]
+    [BepInPlugin("com.danw.aihostilityfix", "DanW-AIHostilityFix", "1.1.0")]
     public class SPTAIHostilityFixPlugin : BaseUnityPlugin
     {
         public static ConfigEntry<bool> EnableMod;
